@@ -567,7 +567,6 @@
 				//$(datatable).off("click","tr");
 				$(datatable).on("click","tr",function(event){
 					var $this = $(this);
-				    $this.css("color","red")
 					if(typeof setting.leftClickTable =="function"){
 						 setting.leftClickTable($this);
 					}else{
@@ -720,7 +719,26 @@
 				            pressedX = false;
 				        }
 				    });
-				}	
+				}
+				function getUUID(len,radix){ //随机生成全局唯一标识符,len为长度，radix为基数
+		  	   	   	var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+					var uuid = [], i;
+					radix = radix || chars.length;
+					if (len) {
+					   for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+					} else {
+					    var r;
+					    uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+					    uuid[14] = '4';
+					    for (i = 0; i < 36; i++) {
+						    if (!uuid[i]) {
+						    	 r = 0 | Math.random()*16;
+						     	uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+						    }
+					  	 }	
+					}				 
+				  	return uuid.join('');
+	  	   	    };
 				//拖动选择多行
 				function dragChoosed(suffix){
 					var dataTable = $("#dataTable"+suffix),
@@ -734,13 +752,8 @@
 					$(dataTable).off("mousedown.dragChoosed");//解绑
 					$(dataTable).on("mousedown.dragChoosed","tr",function(event){
 						$(dataDiv).addClass("noselect");
-						var $tr = $(this);
+						var uuid = getUUID(3,10);//给每一次mousemove拖动选中tr添加唯一标识符，控制选中和取消选中
 						var rowInit = this.rowIndex;
-						var fixInit =  this.rowIndex;
-						var mouseNum = event.button; //0鼠标左键，1鼠标中间吗，2鼠标右键
-						var initY = event.clientY;
-						var $initTR = $tr;
-						var isHign = $initTR.hasClass("hignBgColor");
 						var initX = event.clientX;
 						var initY = event.clientY;
 						$(dataTable).on("mousemove.dragChoosed","tr",function(event){
@@ -748,41 +761,25 @@
 							if(initX==event.clientX&&initY==event.clientY){
 								return;
 							}
-						    if(isHign&&this.rowIndex!=rowInit){
-								$initTR.removeClass("hignBgColor");
-								$initTR.find("td").eq(0).find("input[type='checkbox']").prop("checked",false);
-							}else{
-								$initTR.addClass("hignBgColor");
-								$initTR.find("td").eq(0).find("input[type='checkbox']").prop("checked",true);
+						    var rowIndex = this.rowIndex;
+						    if(rowIndex>=rowInit){
+						    	var firstRow = rowInit;
+						    	var lastRow = rowIndex;
+						    }else{
+						    	var firstRow = rowIndex;
+						    	var lastRow = rowInit;
 						    }
-							var $tr = $(this);
-							var rowIndex = this.rowIndex;
-							var disY = event.clientY - initY;	
-							if(Math.abs(rowIndex-rowInit)==1){
-								if($tr.hasClass("hignBgColor")){
-									$tr.removeClass("hignBgColor");
-									$tr.find("td").eq(0).find("input[type='checkbox']").prop("checked",false);
-								}else{
-									$tr.addClass("hignBgColor");
-									$tr.find("td").eq(0).find("input[type='checkbox']").prop("checked",true);
-								}
-							}else{
-								if($tr.eq(rowInit).hasClass("hignBgColor")){
-									$tr.eq(rowInit).removeClass("hignBgColor");
-									$tr.eq(rowInit).find("td").eq(0).find("input[type='checkbox']").prop("checked",false);
-								}else{
-									$tr.eq(rowInit).addClass("hignBgColor");
-									$tr.eq(rowInit).find("td").eq(0).find("input[type='checkbox']").prop("checked",true);
-								}
-							}
-							if(rowIndex-rowInit==-1&&disY>0){
-								$trs.eq(rowIndex+1).removeClass("hignBgColor");
-								$trs.eq(rowIndex+1).find("td").eq(0).find("input[type='checkbox']").prop("checked",false);
-							}
-							rowInit = rowIndex;
+						    //
+						    $(dataTable).find("tr[uuid='"+uuid+"']").removeClass("hignBgColor");
+					        $(dataTable).find("tr[uuid='"+uuid+"']").find("td").find("input[type=checkbox]").prop("checked",false)
+					    	for(var i=firstRow;i<=lastRow;i++){
+					    		var $tr = $(table.rows[i]);
+					    		$tr.attr("uuid",uuid); //给当前tr添加uuid属性，
+				    			$tr.addClass("hignBgColor");
+				    			$tr.find("td").eq(0).find("input[type=checkbox]").prop("checked",true);
+					    	}
 						});
-						$(document).on("mouseup.dragChoosed",function(event){
-										
+						$(document).on("mouseup.dragChoosed",function(event){			
 							$(dataTable).off("mousemove.dragChoosed"); //解绑
 							$(document).off("mouseup.dragChoosed");//解绑
 							$(dataDiv).removeClass("noselect");
