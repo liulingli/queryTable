@@ -1,0 +1,695 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>条件查询查询数据及分页</title>
+<link rel="stylesheet" href="css/forminit.css"/>
+<link rel="stylesheet" href="css/queryCommon.css"/>
+<link rel="stylesheet" href="css/jquery.winPopup.css"/>
+</head>
+
+<body>
+   <div id="queryContent">
+    <div class="headTitle clearfix">
+    	<i class="title-icon"></i>
+    	<h1>xxx查询</h1>
+    	<span class="option"></span>
+    </div>
+   	<input type="hidden" id="totalPage" value="8">
+   	<input type="hidden" id="totalRecord" value="42">
+    <div class="queryCriteria clearfix">
+     <form action="" id="queryCriteriaForm" class="clearfix queryform">
+     	<!--<input type="hidden" name="isSortCurPage" value="true" id="isSortCurPage">
+     	<input type="hidden" name="sortType" value="" id="sortType">
+     	<input type="hidden" name="sortMethod" value="normal" id="sortMethod">-->
+        <input type="hidden" name="curPage" value="1" id="curPage">
+        <input type="hidden" name="scrollNextPage" value="2" id="scrollNextPage">
+        <div class="query-item">
+           <label for="query1">条件一</label>
+           <input type="text" name="query1" class="form-control">
+        </div>
+        <div class="query-item">
+           <label for="query2">条件二</label>
+           <input type="text" name="query2" class="form-contro">
+        </div>
+        <div class="query-item">
+           <label for="query3">条件三</label>
+           <input type="text" name="query3" class="form-control">
+        </div>
+        <div class="query-item">
+           <label for="query4">条件四</label>
+           <input type="text" name="query4" class="form-control">
+        </div>
+        <div class="query-item">
+            <label for="query5">条件五</label>
+            <input type="text" name="query5" class="form-control">
+        </div>
+         <div class="query-item">
+            <label for="query9">条件九</label>
+            <input type="text" name="query9" class="form-control">
+        </div>
+        <div class="query-item">
+            <label for="query6">条件六</label>
+            <input type="text" name="query6" class="form-control">
+        </div>
+        <div class="query-item">
+			<label for="check">条件六</label>
+			<input type="checkbox" name="check" class="chkbox2" id="checkbox21" data-option="{required:'true',regnex:'maxS2',errMsg:'最多选择两项'}"><label for="checkbox21">音乐音乐音乐音乐</label>
+			<input type="checkbox" name="check" class="chkbox2" id="checkbox22"><label for="checkbox22">体育</label>
+			<input type="checkbox" name="check" class="chkbox2" id="checkbox23"><label for="checkbox23">美术</label>
+			<input type="checkbox" name="check" class="chkbox2" id="checkbox24"><label for="checkbox24">英语</label>
+		</div>
+		<div class="query-item">
+			<label for="radio">条件六</label>
+		    <input type="checkbox" name="checkbox2" id="checkbox31" data-option="{required:'true',regnex:'len1-2'}"><label for="checkbox31">音乐</label>
+			<input type="checkbox" name="checkbox2" id="checkbox32"><label for="checkbox32">体育体育体育</label>
+			<input type="checkbox" name="checkbox2" id="checkbox33"><label for="checkbox33">美术</label>
+			<input type="checkbox" name="checkbox2" id="checkbox34"><label for="checkbox34">英语</label>
+		</div>
+		<div class="query-item">
+			<label for="radio">条件六</label>
+			<input type="radio" name="radio1" class="radio2" id="radio11" data-option="{required:true}"><label for="radio11">音乐</label>
+			<input type="radio" name="radio1" class="radio2" id="radio12"><label for="radio12">体育</label>
+			<input type="radio" name="radio1" class="radio2" id="radio13"><label for="radio13">美术美术美术</label>
+			<input type="radio" name="radio1" class="radio2" id="radio14"><label for="radio14">英语</label>
+		</div>
+        <div class="query-item">
+            <label for="radio">条件七</label>
+     	    <input type="checkbox" name="checkbox" class="chkbox1" id="checkbox1"><label for="checkbox1">音乐1</label>
+	        <input type="checkbox" name="checkbox" class="chkbox1" id="checkbox2"><label for="checkbox2">体育体育体育1</label>
+	        <input type="checkbox" name="checkbox" class="chkbox1" id="checkbox3"><label for="checkbox3">美术1</label>
+	        <input type="checkbox" name="checkbox" class="chkbox1" id="checkbox4"><label for="checkbox4">英语1</label>
+        </div>
+        <div class="query-item">
+            <label for="radio">条件八</label>
+			<input type="radio" name="radio" id="radio1"><label for="radio1">音乐</label>
+			<input type="radio" name="radio" id="radio2"><label for="radio2">体育</label>
+			<input type="radio" name="radio" id="radio3"><label for="radio3">美术</label>
+			<input type="radio" name="radio" id="radio4"><label for="radio4">英语</label>
+        </div>
+       
+     </form> 
+     </div>
+     <div class="queryResults">
+        <div class="resultTitle clearfix">
+        	<i class="title-icon"></i>
+           <h2>查询结果</h2>
+           <div class="operateList clearfix">
+              <button class="btn btn-success" id="querySubmit">查询</button>
+              <button class="btn btn-success" id="add">新增</button>
+              <button class="btn btn-success">修改</button>
+              <button class="btn btn-danger">删除</button>
+           </div>
+        </div>
+        <div class="queryResults-content" id="maxHeight">
+          <div id="doneDiv">
+			<div id="headDiv" style="overflow:hidden">
+				<table id="headTable">
+				  <thead>
+		<!--		  	<tr>
+				    <th><input type="checkbox" name="checkAll"></th>
+					<th data-sort="normal" data-type="">长临</th>
+					<th>类别</th>
+					<th data-sort="normal" data-type="time">开始时间</th>
+					<th>医嘱内容</th>
+					<th>自</th>
+					<th>剂量</th>
+					<th>单位</th>
+					<th>途径</th>
+					<th>频次</th>
+					<th>执行时间</th>
+					<th>详细描述</th>
+					</tr>-->
+						<tr>
+				    <th width="40px"><!--<input type="checkbox" name="checkAll">--><input type="radio" name="radio"></th>
+					<th width="60px" data-sort="normal" data-type="">长临</th>
+					<th width="55px">类别</th>
+					<th width="60px" data-sort="normal" data-type="time">开始时间</th>
+					<th width="140px">医嘱内容</th>
+					<th width="70px">自</th>
+					<th width="60px">剂量</th>
+					<th width="40px">单位</th>
+					<th width="80px">途径</th>
+					<th width="70px">频次</th>
+					<th width="80px">执行时间</th>
+					<th width="100px">详细描述</th>
+					</tr>
+                 </thead>
+				</table>
+				<input type="hidden" id="minWidth" value=""/>
+				
+			</div>
+			<div id="dataDiv" style="overflow-x:auto;">
+			   <table id="dataTable">
+			   	<tbody>
+			   		 <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>EEE医嘱内容</td>
+					<td>EE自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>					
+                   </tr>			   		
+			   	</tbody>
+  	            
+                <tbody> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   </tbody> 
+                   <tbody>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   </tbody>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr> 
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td><input type="text" id="diagnosisName" class="diagnosisName"></td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td>开始时间</td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+					
+                   </tr>
+                   <tr>
+				    <td><input type="checkbox" name="check"></td>
+					<td>长临</td>
+					<td>类别</td>
+					<td></td>
+					<td>医嘱内容</td>
+					<td>自</td>
+					<td>剂量</td>
+					<td>单位</td>
+					<td>途径</td>
+					<td>频次</td>
+					<td>执行时间</td>
+					<td>详细描述</td>
+                   </tr>
+			</table>
+			</div>			
+		</div>
+        </div>
+     </div>
+     <div id="pagination" class="paginate-default"></div>
+   </div>
+   
+   <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+   <script type="text/javascript" src="js/OQueryTable.js"></script>
+   <script type="text/javascript" src="js/queryCommon.js"></script>
+   <script type="text/javascript" src="js/inputQuery.js" ></script>
+   <script>
+   	$(function(){
+   		function getFormPosition(){
+   			//初始化基准宽度
+   			var referWidth = $(".query-item input[type=text]").eq(0).parent().width();
+   			var queryArray = $(".query-item");
+   			queryArray.each(function(){
+   				var width = $(this).width()-1;
+   				var Multiple = Math.ceil(width/referWidth);
+   				$(this).css("width",((referWidth+1)*Multiple)+"px")
+   			})
+   		}
+   		getFormPosition();
+		var ojson = [{"administrationCode":"10","administrationName":"吸入","inpOutpFlag":"","inputCode":"XR","serialNo":10},{"administrationCode":"20","administrationName":"泵入","inpOutpFlag":"","inputCode":"BR","serialNo":77},{"administrationCode":"45","administrationName":"口腔护理","inpOutpFlag":"","inputCode":"KQHL","serialNo":45},{"administrationCode":"44","administrationName":"吸痰","inpOutpFlag":"","inputCode":"XT","serialNo":44},{"administrationCode":"Z5","administrationName":"关节腔内注射","inpOutpFlag":"","inputCode":"GJQNZS","serialNo":88},{"administrationCode":"A4","administrationName":"静脉输液(六岁以下儿童)","inpOutpFlag":"","inputCode":"JMSY6S","serialNo":90},{"administrationCode":"A7","administrationName":"空气压缩泵雾化吸入(六岁以下儿童)","inpOutpFlag":"","inputCode":"KQYSBWH","serialNo":92},{"administrationCode":"17","administrationName":"高频振动雾化吸入(儿科)","inpOutpFlag":"","inputCode":"GPZDWHXR","serialNo":17},{"administrationCode":"Z2","administrationName":"皮下注射(儿科)","inpOutpFlag":"","inputCode":"PXZS","serialNo":72},{"administrationCode":"Z3","administrationName":"皮内注射(儿科)","inpOutpFlag":"","inputCode":"PNZS","serialNo":73},{"administrationCode":"71","administrationName":"静脉注射(儿科)","inpOutpFlag":"","inputCode":"JMZSEK","serialNo":71},{"administrationCode":"K1","administrationName":"包煎","inpOutpFlag":"","inputCode":"BJ","serialNo":74},{"administrationCode":"K9","administrationName":"关节腔灌注","inpOutpFlag":"","inputCode":"GJQGZ","serialNo":87},{"administrationCode":"I4","administrationName":"桡动脉穿刺","inpOutpFlag":"","inputCode":"RDMCC","serialNo":70},{"administrationCode":"I5","administrationName":"桡动脉置管","inpOutpFlag":"","inputCode":"RDMZG","serialNo":71},{"administrationCode":"I6","administrationName":"锁骨下静脉穿刺","inpOutpFlag":"","inputCode":"SGXJMCC","serialNo":72},{"administrationCode":"I7","administrationName":"锁骨下静脉置管","inpOutpFlag":"","inputCode":"SGXJMZG","serialNo":73},{"administrationCode":"Z1","administrationName":"肌肉注射(儿科)","inpOutpFlag":"","inputCode":"JRZS","serialNo":71},{"administrationCode":"A1","administrationName":"口含","inpOutpFlag":"","inputCode":"KH","serialNo":86},{"administrationCode":"A2","administrationName":"口服","inpOutpFlag":"","inputCode":"KF","serialNo":1},{"administrationCode":"A9","administrationName":"小儿静脉输液","inpOutpFlag":"","inputCode":"XEJMSY","serialNo":12},{"administrationCode":"F5","administrationName":"舌下含化","inpOutpFlag":"","inputCode":"SXHH","serialNo":45},{"administrationCode":"B2","administrationName":"冲服","inpOutpFlag":"","inputCode":"CF","serialNo":10},{"administrationCode":"D4","administrationName":"含漱","inpOutpFlag":"","inputCode":"HS","serialNo":28},{"administrationCode":"J1","administrationName":"封管","inpOutpFlag":"","inputCode":"FG","serialNo":70},{"administrationCode":"E5","administrationName":"口腔喷雾","inpOutpFlag":"","inputCode":"KQPW","serialNo":37},{"administrationCode":"C9","administrationName":"压力雾化","inpOutpFlag":"","inputCode":"YLWH","serialNo":29},{"administrationCode":"E4","administrationName":"鼻腔冲洗","inpOutpFlag":"","inputCode":"BQCX","serialNo":36},{"administrationCode":"A6","administrationName":"肌肉注射","inpOutpFlag":"","inputCode":"JZ","serialNo":6},{"administrationCode":"G9","administrationName":"半球后注射","inpOutpFlag":"","inputCode":"BQHZS","serialNo":57},{"administrationCode":"A8","administrationName":"皮内注射","inpOutpFlag":"","inputCode":"PNZS","serialNo":8},{"administrationCode":"A7","administrationName":"皮下注射","inpOutpFlag":"","inputCode":"PXZS","serialNo":7},{"administrationCode":"A5","administrationName":"静脉注射","inpOutpFlag":"","inputCode":"JZ","serialNo":5},{"administrationCode":"F2","administrationName":"气管滴药","inpOutpFlag":"","inputCode":"QGNDR","serialNo":42},{"administrationCode":"G4","administrationName":"穴位封闭","inpOutpFlag":"","inputCode":"FB","serialNo":52},{"administrationCode":"H1","administrationName":"涂眼睑","inpOutpFlag":"","inputCode":"TYJ","serialNo":58},{"administrationCode":"B1","administrationName":"雾化吸入","inpOutpFlag":"","inputCode":"YQWHXR","serialNo":9},{"administrationCode":"B5","administrationName":"鼻穴位注射","inpOutpFlag":"","inputCode":"BXWZS","serialNo":13},{"administrationCode":"F8","administrationName":"胃管内注入","inpOutpFlag":"","inputCode":"WGNZR","serialNo":48},{"administrationCode":"B8","administrationName":"滴双眼","inpOutpFlag":"","inputCode":"DSY","serialNo":16},{"administrationCode":"B7","administrationName":"滴双耳","inpOutpFlag":"","inputCode":"DSE","serialNo":15},{"administrationCode":"E7","administrationName":"瘤体内注射","inpOutpFlag":"","inputCode":"LTNZS","serialNo":39},{"administrationCode":"G1","administrationName":"心腔注射","inpOutpFlag":"","inputCode":"XQZS","serialNo":49},{"administrationCode":"C7","administrationName":"腹腔注射","inpOutpFlag":"","inputCode":"FQZS","serialNo":23},{"administrationCode":"G3","administrationName":"胸腔注射","inpOutpFlag":"","inputCode":"XQZS","serialNo":51},{"administrationCode":"D3","administrationName":"宫颈上药","inpOutpFlag":"","inputCode":"GJSY","serialNo":27},{"administrationCode":"C2","administrationName":"滴右眼","inpOutpFlag":"","inputCode":"DYY","serialNo":18},{"administrationCode":"E6","administrationName":"口腔粘膜注射","inpOutpFlag":"","inputCode":"KQNMZS","serialNo":38},{"administrationCode":"G7","administrationName":"阴道冲洗","inpOutpFlag":"","inputCode":"YDCX","serialNo":55},{"administrationCode":"C1","administrationName":"滴右耳","inpOutpFlag":"","inputCode":"DYE","serialNo":17},{"administrationCode":"D7","administrationName":"结膜下注射","inpOutpFlag":"","inputCode":"JMXZS","serialNo":31},{"administrationCode":"F4","administrationName":"球旁注射","inpOutpFlag":"","inputCode":"QPZS","serialNo":44},{"administrationCode":"F3","administrationName":"球后注射","inpOutpFlag":"","inputCode":"QHZS","serialNo":43},{"administrationCode":"C3","administrationName":"滴左耳","inpOutpFlag":"","inputCode":"DZE","serialNo":19},{"administrationCode":"D8","administrationName":"静脉化疗","inpOutpFlag":"","inputCode":"JMHL","serialNo":32},{"administrationCode":"E3","administrationName":"嚼服","inpOutpFlag":"","inputCode":"JF","serialNo":35},{"administrationCode":"D1","administrationName":"宫颈注射","inpOutpFlag":"","inputCode":"GJZS","serialNo":25},{"administrationCode":"D2","administrationName":"宫腔注射","inpOutpFlag":"","inputCode":"GQZS","serialNo":26},{"administrationCode":"G6","administrationName":"羊膜腔注射","inpOutpFlag":"","inputCode":"YMQZS","serialNo":54},{"administrationCode":"F1","administrationName":"盆腔冲洗","inpOutpFlag":"","inputCode":"PQCX","serialNo":41},{"administrationCode":"B3","administrationName":"膀胱冲洗","inpOutpFlag":"","inputCode":"BGCX","serialNo":11},{"administrationCode":"C5","administrationName":"腹腔冲洗","inpOutpFlag":"","inputCode":"FQCX","serialNo":21},{"administrationCode":"C6","administrationName":"腹腔灌注","inpOutpFlag":"","inputCode":"FQGZ","serialNo":22},{"administrationCode":"G2","administrationName":"胸腔冲洗","inpOutpFlag":"","inputCode":"XQCX","serialNo":50},{"administrationCode":"G8","administrationName":"直肠粘膜注射","inpOutpFlag":"","inputCode":"ZCNMZS","serialNo":56},{"administrationCode":"E2","administrationName":"局部注射","inpOutpFlag":"","inputCode":"JBZS","serialNo":34},{"administrationCode":"F6","administrationName":"脱敏注射","inpOutpFlag":"","inputCode":"TMZS","serialNo":46},{"administrationCode":"C4","administrationName":"滴左眼","inpOutpFlag":"","inputCode":"DZY","serialNo":20},{"administrationCode":"G5","administrationName":"咽后壁注射","inpOutpFlag":"","inputCode":"YHBZS","serialNo":53},{"administrationCode":"B6","administrationName":"滴鼻","inpOutpFlag":"","inputCode":"DB","serialNo":14},{"administrationCode":"F7","administrationName":"外用","inpOutpFlag":"","inputCode":"WY","serialNo":47},{"administrationCode":"A3","administrationName":"静脉输液","inpOutpFlag":"","inputCode":"JMXD","serialNo":2},{"administrationCode":"C8","administrationName":"肛门注入","inpOutpFlag":"","inputCode":"GMYY","serialNo":24},{"administrationCode":"H2","administrationName":"椎管内给药","inpOutpFlag":"","inputCode":"ZGNGY","serialNo":59},{"administrationCode":"H3","administrationName":"关节腔冲洗","inpOutpFlag":"","inputCode":"GJQCX","serialNo":60},{"administrationCode":"H4","administrationName":"脐静脉给药","inpOutpFlag":"","inputCode":"QJMGY","serialNo":61},{"administrationCode":"H5","administrationName":"膀胱灌注","inpOutpFlag":"","inputCode":"PGGZ","serialNo":62},{"administrationCode":"H6","administrationName":"创腔冲洗","inpOutpFlag":"","inputCode":"CQCX","serialNo":63},{"administrationCode":"H7","administrationName":"耳穴位注射","inpOutpFlag":"","inputCode":"EXWZS","serialNo":64},{"administrationCode":"H8","administrationName":"穴位注射","inpOutpFlag":"","inputCode":"XWZS","serialNo":65},{"administrationCode":"H9","administrationName":"会阴冲洗","inpOutpFlag":"","inputCode":"HYCX","serialNo":66},{"administrationCode":"I1","administrationName":"阴道内置药","inpOutpFlag":"","inputCode":"YDNZY","serialNo":67},{"administrationCode":"A3","administrationName":"续静滴","inpOutpFlag":"","inputCode":"XJD","serialNo":3},{"administrationCode":"I3","administrationName":"鞘内注射","inpOutpFlag":"","inputCode":"QNZS","serialNo":69},{"administrationCode":"14","administrationName":"灌肠","inpOutpFlag":"","inputCode":"GC","serialNo":70},{"administrationCode":"15","administrationName":"塞肛","inpOutpFlag":"","inputCode":"SG","serialNo":71},{"administrationCode":"A6","administrationName":"静脉注射(六岁以下儿童)","inpOutpFlag":"","inputCode":"JMZSLSYX","serialNo":85},{"administrationCode":"K3","administrationName":"水煎服","inpOutpFlag":"","inputCode":"SJF","serialNo":76},{"administrationCode":"50","administrationName":"泡酒服","inpOutpFlag":"","inputCode":"PJF","serialNo":68},{"administrationCode":"14","administrationName":"涂口腔","inpOutpFlag":"","inputCode":"TKQ","serialNo":14},{"administrationCode":"YF","administrationName":"研粉","inpOutpFlag":"","inputCode":"YF","serialNo":81},{"administrationCode":"YH","administrationName":"烊化","inpOutpFlag":"","inputCode":"YH","serialNo":82},{"administrationCode":"K2","administrationName":"先煎","inpOutpFlag":"","inputCode":"XJ","serialNo":75},{"administrationCode":"HX","administrationName":"后下","inpOutpFlag":"","inputCode":"HX","serialNo":83},{"administrationCode":"21","administrationName":"高频振动雾化吸入","inpOutpFlag":"","inputCode":"GPZDWHXR","serialNo":78},{"administrationCode":"14","administrationName":"口腔清洗","inpOutpFlag":"","inputCode":"KQQX","serialNo":14},{"administrationCode":"94","administrationName":"机械通气经呼吸机管道雾化给药","inpOutpFlag":"","inputCode":"JXTQJHXJ","serialNo":94},{"administrationCode":"C9","administrationName":"喷鼻","inpOutpFlag":"","inputCode":"PB","serialNo":91},{"administrationCode":"Z4","administrationName":"局部麻醉","inpOutpFlag":"","inputCode":"JBMZ","serialNo":79},{"administrationCode":"11","administrationName":"表面麻醉","inpOutpFlag":"","inputCode":"BMMZ","serialNo":80},{"administrationCode":"J9","administrationName":"保留灌肠","inpOutpFlag":"","inputCode":"BLGC","serialNo":84},{"administrationCode":"11","administrationName":"泪道冲洗","inpOutpFlag":"","inputCode":"LDCX","serialNo":11},{"administrationCode":"12","administrationName":"结膜囊冲洗","inpOutpFlag":"","inputCode":"JMNCX","serialNo":12},{"administrationCode":"A6","administrationName":"空气压缩泵雾化吸入","inpOutpFlag":"","inputCode":"KQYSBWHX","serialNo":93},{"administrationCode":"32","administrationName":"皮内注射(六岁以下儿童)","inpOutpFlag":"","inputCode":"PNZSLSYX","serialNo":95},{"administrationCode":"33","administrationName":"皮下注射(六岁以下儿童)","inpOutpFlag":"","inputCode":"PXZSLSYX","serialNo":96},{"administrationCode":"34","administrationName":"肌肉注射(六岁以下儿童)","inpOutpFlag":"","inputCode":"JRZSLSYX","serialNo":98},{"administrationCode":"Z9","administrationName":"宫腔置入","inpOutpFlag":"","inputCode":"GQZR","serialNo":99}]
+		$(".diagnosisName").inputQuery({
+			divId :"diagnosisName",
+			isOne:true,
+			postParam:{"arg1":"diagnosisName"},//参数，获取模糊查询的关键字
+			JSON:ojson,
+			setConfig:'[{text:"床号"},{text:"项目",returnId:"diagnosisName",query:true},{text:"名称",},{text:"输入码"},{text:"查找码"}]',
+		    callback:'callback2' //选择成功后的回调函数 ，支持字符串
+	   	});
+   	})
+   </script>
+</body>
+</html>

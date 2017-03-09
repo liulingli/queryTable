@@ -1,0 +1,11 @@
+/*滚动条样式 */
+[id^='dataDiv']::-webkit-scrollbar{
+ -webkit-appearance: none;
+   width: 12px;
+   height: 12px;
+}
+[id^='dataDiv']::-webkit-scrollbar-thumb{
+  border-radius: 8px;
+  border: 2px solid #f0f0f0;
+  background-color: rgba(0, 0, 0, .3);
+}
